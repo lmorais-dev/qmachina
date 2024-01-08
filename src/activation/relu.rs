@@ -26,6 +26,9 @@ use super::ActivationFunction;
 /// # Example
 ///
 /// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::relu::ReLUActivationFunction;
+/// 
 /// let relu = ReLUActivationFunction;
 /// let input = 0.5;
 /// let output = relu.activate(input);
