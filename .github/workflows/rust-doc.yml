@@ -12,7 +12,17 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
+      
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
 
+    - name: Generate Documentation
+      run: cargo doc --no-deps
+      
     - name: Set up SSH key
       uses: webfactory/ssh-agent@v0.5.3
       with:
@@ -25,7 +35,7 @@ jobs:
         git config --global user.name 'Your Name'
         git config --global user.email 'your_email@example.com'
         git fetch --depth=1
-        git add -f path/to/your/build
+        git add -f target/doc/*
         git commit -m "Update GitHub Pages"
         git subtree split --prefix path/to/your/build -b gh-pages
         git push -f git@github.com:your-username/your-repo.git gh-pages:gh-pages
