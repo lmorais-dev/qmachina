@@ -1,8 +1,8 @@
-# QMachine
+# QMachina
 
 ## Introduction
 
-Welcome to QMachine, a comprehensive collection of tools designed for developers venturing into the world of machine learning.
+Welcome to QMachina, a comprehensive collection of tools designed for developers venturing into the world of machine learning.
 
 This project includes a variety of functionalities such as activation functions, loss functions, technical analysis indicators, and other useful tools tailored to assist in the exploration and implementation of machine learning techniques in quantitative finance.
 
@@ -17,10 +17,10 @@ This project includes a variety of functionalities such as activation functions,
 
 ### Installation
 
-To install QMachine, run the following command:
+To install QMachina, run the following command:
 
 ```bash
-cargo install qmachine
+cargo install qmachina
 ```
 
 Simple as that 😁
