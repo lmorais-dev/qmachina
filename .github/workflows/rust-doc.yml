@@ -1,29 +1,31 @@
-name: Generate Docs
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # or your default branch
+      - main  # Set this to your default branch
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out repository
+      uses: actions/checkout@v2
 
-    - name: Install Rust
-      uses: actions-rs/toolchain@v1
+    - name: Set up SSH key
+      uses: webfactory/ssh-agent@v0.5.3
       with:
-        profile: minimal
-        toolchain: stable
-        override: true
+        ssh-private-key: ${{ secrets.DEPLOY_PK }}
 
-    - name: Generate Documentation
-      run: cargo doc --no-deps
+    # Add steps for building/testing your site here
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GH_TOKEN }}
-        publish_dir: ./target/doc
+      run: |
+        git config --global user.name 'Your Name'
+        git config --global user.email 'your_email@example.com'
+        git fetch --depth=1
+        git add -f path/to/your/build
+        git commit -m "Update GitHub Pages"
+        git subtree split --prefix path/to/your/build -b gh-pages
+        git push -f git@github.com:your-username/your-repo.git gh-pages:gh-pages
