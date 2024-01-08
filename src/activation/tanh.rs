@@ -1,46 +1,89 @@
 use super::ActivationFunction;
 
-/// `TanhActivationFunction` represents the hyperbolic tangent (tanh) activation function
-/// used in neural networks. The tanh function is an S-shaped curve that maps real-valued
-/// inputs to a range between -1 and 1. It is similar to the sigmoid function but with
-/// output values centered around zero, making it useful in scenarios where negative
-/// outputs are meaningful.
+/// Represents the hyperbolic tangent (tanh) activation function in neural networks.
 ///
-/// This struct implements the `ActivationFunction<f64, f64>` trait, taking a `f64` as input
-/// and producing a `f64` as output. The tanh function is defined as `(e^(x) - e^(-x)) / (e^(x) + e^(-x))`,
-/// and its derivative is `1 - tanh(x)^2`, both of which are important in neural network training.
+/// The hyperbolic tangent function is an S-shaped curve mapping real-valued inputs
+/// to outputs in the range of -1 to 1. It is akin to the sigmoid function but differs
+/// in that its output values are centered around zero. This characteristic makes it 
+/// particularly useful in scenarios where negative outputs are meaningful, such as 
+/// when handling symmetrical data distributions.
+///
+/// This struct implements the `ActivationFunction<f64, f64>` trait. It accepts a 
+/// `f64` input and produces a `f64` output. The tanh function is mathematically 
+/// defined as `(e^x - e^(-x)) / (e^x + e^(-x))`. Its derivative, crucial in neural 
+/// network training algorithms like backpropagation, is `1 - tanh(x)^2`.
+///
+/// # Examples
+///
+/// Basic usage:
+///
+/// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::tanh::TanhActivationFunction;
+/// 
+/// let tanh_activation = TanhActivationFunction;
+/// let input = 0.5;
+/// let output = tanh_activation.activate(input);
+/// ```
+///
+/// When used in a neural network layer, the tanh function can be applied to each neuron's output:
+///
+/// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::tanh::TanhActivationFunction;
+/// 
+/// fn apply_activation(neurons: Vec<f64>) -> Vec<f64> {
+///     neurons.into_iter().map(|n| TanhActivationFunction.activate(n)).collect()
+/// }
+///
+/// let layer_output = vec![0.5, -0.5, 0.0];
+/// let activated_output = apply_activation(layer_output);
+/// ```
+///
+/// Computing the derivative, useful in backpropagation:
+///
+/// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::tanh::TanhActivationFunction;
+/// 
+/// let tanh_activation = TanhActivationFunction;
+/// let input = 0.5;
+/// let derivative = tanh_activation.derivate(input);
+/// ```
 pub struct TanhActivationFunction;
 
 impl ActivationFunction<f64, f64> for TanhActivationFunction {
     /// Computes the hyperbolic tangent of a given input value.
     ///
-    /// The tanh function scales the input to be within the range of -1 to 1,
-    /// providing a smoothly varying value that is centered around zero.
+    /// The function transforms the input to a smoothly varying output within the
+    /// range of -1 to 1, with a natural zero-centered property. This transformation
+    /// aids in normalizing the input data and mitigating issues with gradient-based
+    /// optimization methods in neural networks.
     ///
     /// # Arguments
     ///
-    /// * `input` - The input value for which to compute the hyperbolic tangent.
+    /// * `input` - A `f64` input value for which the hyperbolic tangent is computed.
     ///
     /// # Returns
     ///
-    /// The hyperbolic tangent of the input.
+    /// The `f64` hyperbolic tangent of the input.
     fn activate(&self, input: f64) -> f64 {
         input.tanh()
     }
 
-    /// Computes the derivative of the hyperbolic tangent function for a given input value.
+    /// Computes the derivative of the hyperbolic tangent function at a given input value.
     ///
-    /// The derivative of tanh is important in the context of neural network training,
-    /// especially for backpropagation. It represents the rate of change of the tanh
-    /// function at a given input value.
+    /// This derivative is a critical component in neural network training processes,
+    /// particularly during the backpropagation phase. It indicates how much the
+    /// tanh function output changes concerning a change in its input.
     ///
     /// # Arguments
     ///
-    /// * `input` - The input value for which to compute the derivative.
+    /// * `input` - A `f64` input value for which the derivative of tanh is computed.
     ///
     /// # Returns
     ///
-    /// The derivative of the hyperbolic tangent function at the given input.
+    /// The `f64` derivative of the hyperbolic tangent function at the specified input.
     fn derivate(&self, input: f64) -> f64 {
         1.0 - input.tanh().powi(2)
     }

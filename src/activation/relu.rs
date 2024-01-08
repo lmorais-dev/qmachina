@@ -1,14 +1,49 @@
 use super::ActivationFunction;
 
-/// `ReLUActivationFunction` represents the Rectified Linear Unit (ReLU) activation function
-/// used in neural networks, particularly in deep learning models. The ReLU function outputs
-/// the input itself if it is positive, and zero otherwise. It is known for its simplicity
-/// and effectiveness in various neural network architectures.
+/// Represents the Rectified Linear Unit (ReLU) activation function in neural networks.
 ///
-/// This struct implements the `ActivationFunction<f64, f64>` trait, taking a `f64` as input
-/// and producing a `f64` as output. The ReLU function is defined as `max(0, x)`, and its
-/// derivative is 1 for positive inputs and 0 for non-positive inputs, which is crucial
-/// during the backpropagation process in neural network training.
+/// ReLU is widely used in deep learning models. It outputs the input value if positive,
+/// and zero otherwise. Known for its simplicity and efficiency, ReLU helps mitigate
+/// the vanishing gradient problem common in deep networks and speeds up training.
+///
+/// This struct implements the `ActivationFunction<f64, f64>` trait. It accepts a `f64`
+/// input and returns a `f64` output. The ReLU function is defined as `max(0, x)`.
+/// Its derivative is 1 for positive inputs and 0 for non-positive inputs, which is
+/// crucial during the backpropagation process in neural network training.
+///
+/// # Mathematical Background
+///
+/// The ReLU function is defined mathematically as:
+/// `ReLU(x) = max(0, x)`.
+/// It is linear for all positive values and zero for negative values, making it
+/// computationally efficient and less susceptible to problems during optimization.
+///
+/// # Usage
+///
+/// ReLU is commonly used in hidden layers of neural networks. Its linear nature for
+/// positive values allows models to learn complex patterns efficiently.
+///
+/// # Example
+///
+/// ```
+/// let relu = ReLUActivationFunction;
+/// let input = 0.5;
+/// let output = relu.activate(input);
+/// // `output` is now the ReLU of 0.5, which is 0.5.
+///
+/// let negative_input = -0.5;
+/// let negative_output = relu.activate(negative_input);
+/// // `negative_output` is the ReLU of -0.5, which is 0.
+///
+/// let derivative_positive = relu.derivate(input);
+/// // `derivative_positive` is 1, as the input is positive.
+///
+/// let derivative_negative = relu.derivate(negative_input);
+/// // `derivative_negative` is 0, as the input is negative.
+/// ```
+///
+/// Note: While the ReLU function's derivative at zero is technically undefined,
+/// it is conventionally treated as 0 for simplicity in most implementations.
 pub struct ReLUActivationFunction;
 
 impl ActivationFunction<f64, f64> for ReLUActivationFunction {

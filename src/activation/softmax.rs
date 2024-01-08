@@ -1,11 +1,44 @@
 use super::ActivationFunction;
 
-/// `SoftmaxActivationFunction` represents the Softmax activation function
-/// used in neural networks, particularly in the output layer for multi-class
-/// classification. It converts a vector of values into a probability distribution,
-/// where each value's probability is proportional to its exponential.
+/// Represents the Softmax activation function in neural networks.
 ///
-/// This struct implements the `ActivationFunction<Vec<f64>, Vec<f64>>` trait.
+/// Softmax is commonly used in the output layer of neural networks for 
+/// multi-class classification problems. It transforms a vector of real 
+/// values into a probability distribution. Each value's probability in the 
+/// output vector is proportional to the exponential of the value, ensuring 
+/// that all probabilities sum up to one and each is in the range (0, 1).
+///
+/// This struct implements the `ActivationFunction<Vec<f64>, Vec<f64>>` trait,
+/// allowing it to be seamlessly integrated into neural network architectures
+/// that handle multi-dimensional data.
+///
+/// # Mathematical Background
+///
+/// Given an input vector `x`, the Softmax function computes the exponential
+/// of each element, subtracts the maximum element for numerical stability, and
+/// then normalizes these values by dividing by the sum of all these exponentials.
+///
+/// # Usage
+///
+/// When applied to the raw output (logits) of a neural network layer, Softmax
+/// converts these logits into probabilities, which are essential for tasks like
+/// classification where probabilities are required for each class.
+///
+/// # Example
+///
+/// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::softmax::SoftmaxActivationFunction;
+/// 
+/// let softmax = SoftmaxActivationFunction;
+/// let logits = vec![1.0, 2.0, 3.0];
+/// let probabilities = softmax.activate(&logits);
+/// // The 'probabilities' now represent the probability distribution of classes.
+/// ```
+///
+/// Note: The derivative of Softmax is not straightforward as it depends on all
+/// elements of the output vector. It's typically used in conjunction with a loss
+/// function, like cross-entropy, in multi-class classification problems.
 pub struct SoftmaxActivationFunction;
 
 impl ActivationFunction<&Vec<f64>, Vec<f64>> for SoftmaxActivationFunction {

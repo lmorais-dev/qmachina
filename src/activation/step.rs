@@ -15,6 +15,9 @@ use super::ActivationFunction;
 /// # Examples
 ///
 /// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::step::StepActivationFunction;
+/// 
 /// let step_func = StepActivationFunction;
 /// let activated_value = step_func.activate(0.5); // returns 1.0
 /// let derivative_value = step_func.derivate(0.5); // returns 0.0

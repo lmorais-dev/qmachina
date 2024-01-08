@@ -12,6 +12,9 @@ use super::ActivationFunction;
 /// # Examples
 ///
 /// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::param_relu::PReLUActivationFunction;
+/// 
 /// let prelu = PReLUActivationFunction::new(0.25);
 /// let activated_value = prelu.activate(-2.0); // returns -0.5
 /// let derivative_value = prelu.derivate(-2.0); // returns 0.25

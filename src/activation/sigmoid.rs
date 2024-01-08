@@ -1,14 +1,48 @@
 use super::ActivationFunction;
 
-/// `SigmoidActivationFunction` represents the sigmoid activation function
-/// used in neural networks. The sigmoid function is a smooth, S-shaped function
-/// that maps real-valued inputs to the (0, 1) range. It is widely used in scenarios
-/// where a probability output is needed.
+/// Represents the sigmoid activation function in neural networks.
 ///
-/// This structure implements the `ActivationFunction<f64, f64>` trait, meaning it
-/// takes a `f64` as input and returns a `f64` as output. The sigmoid function is defined
-/// as `1 / (1 + e^(-x))`, and its derivative, used in the backpropagation algorithm,
-/// is `sigmoid(x) * (1 - sigmoid(x))`.
+/// The sigmoid function is a smooth, S-shaped curve that maps real-valued 
+/// inputs to a range between 0 and 1. It is commonly used in binary 
+/// classification problems and other scenarios where a probability-like 
+/// output is needed.
+///
+/// This structure implements the `ActivationFunction<f64, f64>` trait. It
+/// takes a `f64` input and returns a `f64` output. The sigmoid function is 
+/// defined mathematically as `1 / (1 + e^(-x))`. Its derivative, which is 
+/// `sigmoid(x) * (1 - sigmoid(x))`, plays a critical role in neural network 
+/// training algorithms, particularly in the backpropagation process.
+///
+/// # Mathematical Background
+///
+/// The sigmoid function smoothly transitions inputs to outputs in the range (0, 1),
+/// making it suitable for scenarios like logistic regression and neurons in a
+/// binary classification neural network. Its "S" shape allows it to handle inputs 
+/// of varied scales effectively.
+///
+/// # Usage
+///
+/// Sigmoid can be used as an activation function in a neural network layer to
+/// normalize outputs. It's particularly useful in the final layer of a binary
+/// classification network, where the output can be interpreted as a probability.
+///
+/// # Example
+///
+/// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::sigmoid::SigmoidActivationFunction;
+/// 
+/// let sigmoid = SigmoidActivationFunction;
+/// let input = 0.5;
+/// let output = sigmoid.activate(input);
+/// // `output` is now the sigmoid of 0.5, a value between 0 and 1.
+///
+/// let derivative = sigmoid.derivate(input);
+/// // `derivative` represents the rate of change of the sigmoid function at 0.5.
+/// ```
+///
+/// Note: In practice, the derivative of the sigmoid function is often used in 
+/// conjunction with the original function output, optimizing computational efficiency.
 pub struct SigmoidActivationFunction;
 
 impl ActivationFunction<f64, f64> for SigmoidActivationFunction {

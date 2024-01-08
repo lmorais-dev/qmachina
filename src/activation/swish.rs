@@ -11,6 +11,9 @@ use super::{sigmoid::SigmoidActivationFunction, ActivationFunction};
 /// # Examples
 ///
 /// ```
+/// use quantify::activation::ActivationFunction;
+/// use quantify::activation::swish::SwishActivationFunction;
+/// 
 /// let swish = SwishActivationFunction::new(1.0);
 /// let activated_value = swish.activate(0.5); // Example usage
 /// ```
