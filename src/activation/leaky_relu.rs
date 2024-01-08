@@ -14,8 +14,8 @@ use super::ActivationFunction;
 /// Implementing a LeakyReLU with a small negative slope (alpha):
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::leaky_relu::LeakyReLUActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::leaky_relu::LeakyReLUActivationFunction;
 /// 
 /// let leaky_relu = LeakyReLUActivationFunction;
 /// let activated_value = leaky_relu.activate(-5.0); // returns -0.05

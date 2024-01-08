@@ -29,8 +29,8 @@ use super::ActivationFunction;
 /// # Example
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::sigmoid::SigmoidActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::sigmoid::SigmoidActivationFunction;
 /// 
 /// let sigmoid = SigmoidActivationFunction;
 /// let input = 0.5;

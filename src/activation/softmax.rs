@@ -27,8 +27,8 @@ use super::ActivationFunction;
 /// # Example
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::softmax::SoftmaxActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::softmax::SoftmaxActivationFunction;
 /// 
 /// let softmax = SoftmaxActivationFunction;
 /// let logits = vec![1.0, 2.0, 3.0];

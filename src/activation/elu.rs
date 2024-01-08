@@ -13,8 +13,8 @@ use super::ActivationFunction;
 /// # Examples
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::elu::ELUActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::elu::ELUActivationFunction;
 /// 
 /// let elu = ELUActivationFunction::new(1.0);
 /// let activated_value = elu.activate(-1.0);  // Evaluates to approximately -0.6321

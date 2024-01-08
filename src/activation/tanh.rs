@@ -18,8 +18,8 @@ use super::ActivationFunction;
 /// Basic usage:
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::tanh::TanhActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::tanh::TanhActivationFunction;
 /// 
 /// let tanh_activation = TanhActivationFunction;
 /// let input = 0.5;
@@ -29,8 +29,8 @@ use super::ActivationFunction;
 /// When used in a neural network layer, the tanh function can be applied to each neuron's output:
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::tanh::TanhActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::tanh::TanhActivationFunction;
 /// 
 /// fn apply_activation(neurons: Vec<f64>) -> Vec<f64> {
 ///     neurons.into_iter().map(|n| TanhActivationFunction.activate(n)).collect()
@@ -43,8 +43,8 @@ use super::ActivationFunction;
 /// Computing the derivative, useful in backpropagation:
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::tanh::TanhActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::tanh::TanhActivationFunction;
 /// 
 /// let tanh_activation = TanhActivationFunction;
 /// let input = 0.5;

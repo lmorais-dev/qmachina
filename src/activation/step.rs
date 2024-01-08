@@ -15,8 +15,8 @@ use super::ActivationFunction;
 /// # Examples
 ///
 /// ```
-/// use quantify::activation::ActivationFunction;
-/// use quantify::activation::step::StepActivationFunction;
+/// use qmachina::activation::ActivationFunction;
+/// use qmachina::activation::step::StepActivationFunction;
 /// 
 /// let step_func = StepActivationFunction;
 /// let activated_value = step_func.activate(0.5); // returns 1.0
