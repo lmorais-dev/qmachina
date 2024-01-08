@@ -1,5 +1,5 @@
 [package]
-name = "rust-perceptron"
+name = "quantify"
 version = "0.1.0"
 edition = "2021"
 
