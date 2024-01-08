@@ -35,7 +35,7 @@ jobs:
         git config --global user.name 'Your Name'
         git config --global user.email 'your_email@example.com'
         git fetch --depth=1
-        git add -f target/doc/*
+        git add -f target/doc
         git commit -m "Update GitHub Pages"
-        git subtree split --prefix path/to/your/build -b gh-pages
-        git push -f git@github.com:your-username/your-repo.git gh-pages:gh-pages
+        git subtree split --prefix target/doc -b gh-pages
+        git push -f git@github.com:lmorais-dev/quantify.git gh-pages:gh-pages
