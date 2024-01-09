@@ -5,6 +5,7 @@ use anyhow::Result;
 
 pub mod mse;
 pub mod mae;
+pub mod bce;
 
 /// The `LossFunction` trait defines a common interface for loss functions
 /// in machine learning algorithms. It is designed to compute a loss metric
