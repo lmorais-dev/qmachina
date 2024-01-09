@@ -47,6 +47,35 @@ use super::LossFunction;
 pub struct BinaryCrossEntropyLossFunction;
 
 impl LossFunction<f64> for BinaryCrossEntropyLossFunction {
+    /// Computes the Binary Cross-Entropy (BCE) loss between predictions and targets.
+    ///
+    /// Binary Cross-Entropy loss is a widely-used loss function for binary classification tasks.
+    /// It calculates the loss by comparing the predicted probability of the positive class 
+    /// against the actual binary target (0 or 1).
+    ///
+    /// # Parameters
+    ///
+    /// * `predictions` - An `Arc<[f64]>` containing the predicted probabilities from the model.
+    ///   Each element should be a probability value between 0 and 1, indicating the likelihood
+    ///   of the positive class.
+    /// * `targets` - An `Arc<[f64]>` containing the actual binary targets (0 or 1).
+    ///
+    /// # Returns
+    ///
+    /// A `Result<f64, anyhow::Error>`, where:
+    ///   - The `Ok` variant contains the computed BCE loss. The loss is calculated as the
+    ///     average of the BCE for each individual prediction-target pair.
+    ///   - The `Err` variant encapsulates errors that occur during computation, such as:
+    ///     - Mismatched lengths of the predictions and targets arrays, indicating that each
+    ///       prediction does not correspond to a target.
+    ///     - Predictions not being valid probabilities (values not in the range [0, 1]).
+    ///     - Undefined logarithmic calculations when probabilities are exactly 0 or 1.
+    ///
+    /// # Notes
+    ///
+    /// The computation carefully handles edge cases for probabilities (0 and 1) to avoid
+    /// NaN values from undefined logarithmic operations. It ensures that the loss calculation
+    /// is robust and reliable across various inputs.
     fn compute(&self, predictions: Arc<[f64]>, targets: Arc<[f64]>) -> Result<f64> {
         if predictions.len() != targets.len() {
             return Err(anyhow!("Predictions and targets must have the same length"));
