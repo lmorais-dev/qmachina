@@ -95,7 +95,7 @@ mod tests {
     /// Test MSE with perfect prediction.
     /// Expected result is zero loss.
     #[test]
-    fn test_mse_perfect_prediction() {
+    fn mse_perfect_prediction() {
         let mse_loss = MeanSquaredErrorLossFunction;
         let predictions = Arc::new([1.0, 2.0, 3.0]);
         let targets = Arc::new([1.0, 2.0, 3.0]);
@@ -106,7 +106,7 @@ mod tests {
     /// Test MSE with predictions and targets of different lengths.
     /// Expected result is an error.
     #[test]
-    fn test_mse_mismatched_lengths() {
+    fn mse_mismatched_lengths() {
         let mse_loss = MeanSquaredErrorLossFunction;
         let predictions = Arc::new([1.0, 2.0]);
         let targets = Arc::new([1.0, 2.0, 3.0]);
@@ -117,7 +117,7 @@ mod tests {
     /// Test MSE with positive differences.
     /// Expected result is a positive loss.
     #[test]
-    fn test_mse_positive_difference() {
+    fn mse_positive_difference() {
         let mse_loss = MeanSquaredErrorLossFunction;
         let predictions = Arc::new([2.0, 3.0, 4.0]);
         let targets = Arc::new([1.0, 2.0, 3.0]);
@@ -128,7 +128,7 @@ mod tests {
     /// Test MSE with negative differences.
     /// Expected result is a positive loss.
     #[test]
-    fn test_mse_negative_difference() {
+    fn mse_negative_difference() {
         let mse_loss = MeanSquaredErrorLossFunction;
         let predictions = Arc::new([0.0, 1.0, 2.0]);
         let targets = Arc::new([1.0, 2.0, 3.0]);
@@ -140,7 +140,7 @@ mod tests {
     /// This test uses a mix of positive and negative differences.
     /// Expected result is a specific positive loss value.
     #[test]
-    fn test_mse_varying_values() {
+    fn mse_varying_values() {
         let mse_loss = MeanSquaredErrorLossFunction;
         let predictions = Arc::new([1.5, 2.5, 3.5]);
         let targets = Arc::new([1.0, 3.0, 2.0]);
