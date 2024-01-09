@@ -86,3 +86,66 @@ impl LossFunction<f64> for MeanSquaredErrorLossFunction {
         Ok(mse)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::sync::Arc;
+
+    /// Test MSE with perfect prediction.
+    /// Expected result is zero loss.
+    #[test]
+    fn test_mse_perfect_prediction() {
+        let mse_loss = MeanSquaredErrorLossFunction;
+        let predictions = Arc::new([1.0, 2.0, 3.0]);
+        let targets = Arc::new([1.0, 2.0, 3.0]);
+        let loss = mse_loss.compute(predictions, targets).unwrap();
+        assert_eq!(loss, 0.0);
+    }
+
+    /// Test MSE with predictions and targets of different lengths.
+    /// Expected result is an error.
+    #[test]
+    fn test_mse_mismatched_lengths() {
+        let mse_loss = MeanSquaredErrorLossFunction;
+        let predictions = Arc::new([1.0, 2.0]);
+        let targets = Arc::new([1.0, 2.0, 3.0]);
+        let result = mse_loss.compute(predictions, targets);
+        assert!(result.is_err());
+    }
+
+    /// Test MSE with positive differences.
+    /// Expected result is a positive loss.
+    #[test]
+    fn test_mse_positive_difference() {
+        let mse_loss = MeanSquaredErrorLossFunction;
+        let predictions = Arc::new([2.0, 3.0, 4.0]);
+        let targets = Arc::new([1.0, 2.0, 3.0]);
+        let loss = mse_loss.compute(predictions, targets).unwrap();
+        assert!(loss > 0.0);
+    }
+
+    /// Test MSE with negative differences.
+    /// Expected result is a positive loss.
+    #[test]
+    fn test_mse_negative_difference() {
+        let mse_loss = MeanSquaredErrorLossFunction;
+        let predictions = Arc::new([0.0, 1.0, 2.0]);
+        let targets = Arc::new([1.0, 2.0, 3.0]);
+        let loss = mse_loss.compute(predictions, targets).unwrap();
+        assert!(loss > 0.0);
+    }
+
+    /// Test MSE with varying values.
+    /// This test uses a mix of positive and negative differences.
+    /// Expected result is a specific positive loss value.
+    #[test]
+    fn test_mse_varying_values() {
+        let mse_loss = MeanSquaredErrorLossFunction;
+        let predictions = Arc::new([1.5, 2.5, 3.5]);
+        let targets = Arc::new([1.0, 3.0, 2.0]);
+        let loss = mse_loss.compute(predictions, targets).unwrap();
+        let expected_loss = ((0.5f64.powi(2) + 0.5f64.powi(2) + 1.5f64.powi(2)) / 3.0) as f64;
+        assert_eq!(loss, expected_loss);
+    }
+}
