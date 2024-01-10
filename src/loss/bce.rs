@@ -84,7 +84,7 @@ impl LossFunction<f64> for BinaryCrossEntropyLossFunction {
         let bce = predictions.iter()
             .zip(targets.iter())
             .try_fold(0.0, |acc, (&p, &t)| {
-                if p < 0.0 || p > 1.0 {
+                if !(0.0..=1.0).contains(&p) {
                     Err(anyhow!("Predictions must be probabilities (between 0 and 1)"))
                 } else if p == 0.0 {
                     if t == 0.0 {
