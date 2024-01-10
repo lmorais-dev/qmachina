@@ -1,6 +1,6 @@
 [package]
 name = "qmachina"
-version = "0.2.0-dev.2"
+version = "0.2.0-dev.3"
 edition = "2021"
 description = "A small library for Quant Machine Learning development."
 license = "LGPL-3.0-only"
