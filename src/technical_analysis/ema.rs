@@ -5,7 +5,7 @@
 //! and data series for trend identification.
 use std::sync::Arc;
 use anyhow::{Result, anyhow};
-use super::{Indicator, MovingAverageIndicator};
+use super::{Indicator, PeriodIndicator};
 
 pub struct ExponentialMovingAverage {
     period: usize,
@@ -70,7 +70,7 @@ impl Indicator<f64, f64> for ExponentialMovingAverage {
     }
 }
 
-impl MovingAverageIndicator for ExponentialMovingAverage {
+impl PeriodIndicator for ExponentialMovingAverage {
     /// Returns the current period used in the EMA calculation.
     ///
     /// # Returns

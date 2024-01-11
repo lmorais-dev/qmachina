@@ -5,7 +5,7 @@
 use std::{sync::Arc, ops::Div};
 use anyhow::{Result, anyhow};
 
-use super::{Indicator, MovingAverageIndicator};
+use super::{Indicator, PeriodIndicator};
 
 pub struct SimpleMovingAverage {
     period: usize
@@ -38,7 +38,7 @@ impl SimpleMovingAverage {
     }
 }
 
-impl MovingAverageIndicator for SimpleMovingAverage {
+impl PeriodIndicator for SimpleMovingAverage {
     /// Returns the current period used in the SMA calculation.
     ///
     /// # Returns
