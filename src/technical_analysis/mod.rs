@@ -3,6 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 
 pub mod sma;
+pub mod ema;
 
 /// The `Indicator` trait defines a common interface for technical analysis indicators.
 /// It is designed to compute an indicator value based on a given set of data.
