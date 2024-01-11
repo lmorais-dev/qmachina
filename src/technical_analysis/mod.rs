@@ -4,6 +4,7 @@ use anyhow::Result;
 
 pub mod sma;
 pub mod ema;
+pub mod rsi;
 
 /// The `Indicator` trait defines a common interface for technical analysis indicators.
 /// It is designed to compute an indicator value based on a given set of data.
@@ -28,7 +29,7 @@ pub mod ema;
 /// ```
 /// use std::sync::Arc;
 /// use anyhow::Result;
-/// use qmachina::technical_analysis::{Indicator, MovingAverageIndicator};
+/// use qmachina::technical_analysis::{Indicator, PeriodIndicator};
 ///
 /// pub struct SimpleMovingAverage {
 ///     period: usize
@@ -70,25 +71,25 @@ pub trait Indicator<T, V> {
     fn compute(&self, data: Arc<[T]>) -> Result<V>;
 }
 
-/// The `MovingAverageIndicator` trait extends the functionality of indicators that
-/// utilize a moving average. It provides methods to get and set the period of the
-/// moving average, which is a common parameter in many technical analysis indicators.
+/// The `PeriodIndicator` trait extends the functionality of indicators that
+/// do calculations based on periods. It provides methods to get and set the period of the
+/// indicator, which is a common parameter in many technical analysis indicators.
 ///
 /// This trait does not have specific type parameters, as it mainly deals with the
 /// period configuration, which is universally represented as a `usize`.
 ///
 /// # Example
 ///
-/// Implementing the `MovingAverageIndicator` trait for a Simple Moving Average (SMA):
+/// Implementing the `PeriodIndicator` trait for a Simple Moving Average (SMA):
 ///
 /// ```
-/// use qmachina::technical_analysis::{MovingAverageIndicator};
+/// use qmachina::technical_analysis::{PeriodIndicator};
 ///
 /// pub struct SimpleMovingAverage {
 ///     period: usize
 /// };
 ///
-/// impl MovingAverageIndicator for SimpleMovingAverage {
+/// impl PeriodIndicator for SimpleMovingAverage {
 ///     fn period(&self) -> usize {
 ///         self.period
 ///     }
@@ -103,7 +104,7 @@ pub trait Indicator<T, V> {
 ///
 /// Implementors should ensure that methods do not panic under normal operation.
 /// Care should be taken to handle edge cases, such as attempting to set a period of zero.
-pub trait MovingAverageIndicator {
+pub trait PeriodIndicator {
     fn period(&self) -> usize;
     fn set_period(&mut self, period: usize);
 }
