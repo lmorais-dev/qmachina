@@ -13,5 +13,10 @@ keywords = ["machine-learning", "quantitative", "quant"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+polars = ["dep:polars"]
+
 [dependencies]
 anyhow = "=1.0.79"
+polars = { version = "=0.36.2", optional = true }
+
