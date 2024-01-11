@@ -74,6 +74,8 @@ impl Indicator<f64, (f64, f64)> for BollingerBands {
 
         let sma_value = self.sma.compute(data.clone())?;
 
+        let data = &data[data.len() - self.period..];
+
         let variance: f64 = data.iter()
             .take(self.period)
             .map(|&value| {
@@ -133,8 +135,8 @@ mod tests {
         // These values should be calculated based on the expected Bollinger Bands calculation
         assert!(upper_band > lower_band, "Upper band should be greater than lower band");
 
-        let expected_upper_band = 103.63;
-        let expected_lower_band = 99.56;
+        let expected_upper_band = 101.82;
+        let expected_lower_band = 96.17;
 
         assert!((upper_band - expected_upper_band).abs() < 0.01, "Upper band should be close to the expected value");
         assert!((lower_band - expected_lower_band).abs() < 0.01, "Lower band should be close to the expected value");

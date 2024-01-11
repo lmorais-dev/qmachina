@@ -58,8 +58,10 @@ impl Indicator<f64, f64> for ExponentialMovingAverage {
             return Err(anyhow!("Period is larger than the sampled data."));
         }
 
-        let mut ema = data[0];
-        for &value in &data[1..] {
+        let slice = &data[(data.len() - self.period)..];
+
+        let mut ema = slice[0];
+        for &value in &slice[1..] {
             if value.is_nan() || value.is_infinite() {
                 return Err(anyhow!("Invalid data encountered during calculations."));
             }
@@ -113,9 +115,7 @@ mod tests {
         let data = Arc::new([1.0, 2.0, 3.0, 4.0, 5.0]);
 
         let result = ema.compute(data.clone()).unwrap();
-        let expected_ema = data.iter().skip(1).fold(data[0], |prev_ema, &price| {
-            (price - prev_ema) * ema.smoothing + prev_ema
-        });
+        let expected_ema = 4.25;
 
         assert!((result - expected_ema).abs() < f64::EPSILON, "EMA should be close to the expected value");
     }

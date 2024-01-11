@@ -82,7 +82,7 @@ impl Indicator<f64, f64> for SimpleMovingAverage {
             return Err(anyhow!("Period is larger than the sampled data."));
         }
 
-        let sum: f64 = data.iter().take(self.period).sum();
+        let sum: f64 = data.iter().skip(data.len() - self.period).take(self.period).sum();
         if sum.is_nan() || sum.is_infinite() {
             return Err(anyhow!("Invalid data encountered during calculations."));
         }
@@ -115,7 +115,7 @@ mod tests {
         let data = Arc::new([1.0, 2.0, 3.0, 4.0, 5.0]);
 
         let result = sma.compute(data).unwrap();
-        assert_eq!(result, 2.0, "SMA of last 3 values (1, 2, 3) should be 2.0");
+        assert_eq!(result, 4.0, "SMA of last 3 values (3, 4, 5) should be 4.0");
     }
 
     #[test]
