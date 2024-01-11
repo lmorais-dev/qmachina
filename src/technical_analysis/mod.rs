@@ -5,6 +5,7 @@ use anyhow::Result;
 pub mod sma;
 pub mod ema;
 pub mod rsi;
+pub mod bollinger;
 
 /// The `Indicator` trait defines a common interface for technical analysis indicators.
 /// It is designed to compute an indicator value based on a given set of data.
