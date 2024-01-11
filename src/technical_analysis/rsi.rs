@@ -3,8 +3,6 @@
 //! The RSI is a momentum oscillator used in technical analysis to measure the velocity and
 //! magnitude of directional price movements. It provides signals about overbought or oversold
 //! conditions in an asset.
-
-use std::sync::Arc;
 use anyhow::{Result, anyhow};
 use super::{Indicator, PeriodIndicator};
 
@@ -64,7 +62,7 @@ impl Indicator<f64, f64> for RelativeStrengthIndex {
     ///
     /// # Parameters
     ///
-    /// * `data` - An `Arc<[f64]>` containing the price changes for which the RSI is calculated.
+    /// * `data` - An `Vec<f64>` containing the price changes for which the RSI is calculated.
     ///
     /// # Returns
     ///
@@ -74,7 +72,7 @@ impl Indicator<f64, f64> for RelativeStrengthIndex {
     ///
     /// Returns an error if the length of the data is insufficient for RSI calculation or if the data contains
     /// invalid values (NaN or infinite).
-    fn compute(&self, data: Arc<[f64]>) -> Result<f64> {
+    fn compute(&self, data: &Vec<f64>) -> Result<f64> {
         if data.len() < self.period + 1 {
             return Err(anyhow!("Insufficient data for RSI calculation."));
         }
@@ -109,7 +107,6 @@ impl Indicator<f64, f64> for RelativeStrengthIndex {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::Arc;
 
     #[test]
     fn creation_with_valid_period() {
@@ -127,8 +124,8 @@ mod tests {
     fn compute_sufficient_data_arc() {
         let rsi = RelativeStrengthIndex::new(14);
         // Example data (price changes) for calculating RSI
-        let data = Arc::new([1.0, 1.1, 1.2, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.45, 1.5, 1.55, 1.6, 1.65]);
-        let result = rsi.compute(data).unwrap();
+        let data = vec![1.0, 1.1, 1.2, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.45, 1.5, 1.55, 1.6, 1.65];
+        let result = rsi.compute(&data).unwrap();
 
         assert!(result < 100.0 && result > 70.0, "Computed RSI should be close to the expected value");
     }
@@ -136,16 +133,16 @@ mod tests {
     #[test]
     fn compute_insufficient_data_arc() {
         let rsi = RelativeStrengthIndex::new(14);
-        let data = Arc::new([1.0, 2.0]);
-        let result = rsi.compute(data);
+        let data = vec![1.0, 2.0];
+        let result = rsi.compute(&data);
         assert!(result.is_err(), "Should return an error due to insufficient data");
     }
 
     #[test]
     fn compute_with_invalid_data_arc() {
         let rsi = RelativeStrengthIndex::new(14);
-        let data = Arc::new([1.0, f64::NAN, 3.0]);
-        let result = rsi.compute(data);
+        let data = vec![1.0, f64::NAN, 3.0];
+        let result = rsi.compute(&data);
         assert!(result.is_err(), "Should return an error due to invalid (NaN) data");
     }
 }

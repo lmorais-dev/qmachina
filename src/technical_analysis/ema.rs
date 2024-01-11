@@ -3,7 +3,6 @@
 //! The EMA is a type of moving average that places a greater weight and significance
 //! on the most recent data points. It's used in technical analysis to smooth out price
 //! and data series for trend identification.
-use std::sync::Arc;
 use anyhow::{Result, anyhow};
 use super::{Indicator, PeriodIndicator};
 
@@ -43,7 +42,7 @@ impl Indicator<f64, f64> for ExponentialMovingAverage {
     ///
     /// # Parameters
     ///
-    /// * `data` - An `Arc<[f64]>` containing the data points for which the EMA is calculated.
+    /// * `data` - An `Vec<f64>` containing the data points for which the EMA is calculated.
     ///
     /// # Returns
     ///
@@ -53,7 +52,7 @@ impl Indicator<f64, f64> for ExponentialMovingAverage {
     ///
     /// Returns an error if the length of the data is less than the EMA period or if the data contains
     /// invalid values (NaN or infinite).
-    fn compute(&self, data: Arc<[f64]>) -> Result<f64> {
+    fn compute(&self, data: &Vec<f64>) -> Result<f64> {
         if data.len() < self.period {
             return Err(anyhow!("Period is larger than the sampled data."));
         }
@@ -95,7 +94,6 @@ impl PeriodIndicator for ExponentialMovingAverage {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::Arc;
 
     #[test]
     fn ema_creation_with_valid_period() {
@@ -112,9 +110,9 @@ mod tests {
     #[test]
     fn compute_sufficient_data_arc() {
         let ema = ExponentialMovingAverage::new(3);
-        let data = Arc::new([1.0, 2.0, 3.0, 4.0, 5.0]);
+        let data = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
-        let result = ema.compute(data.clone()).unwrap();
+        let result = ema.compute(&data).unwrap();
         let expected_ema = 4.25;
 
         assert!((result - expected_ema).abs() < f64::EPSILON, "EMA should be close to the expected value");
@@ -123,16 +121,16 @@ mod tests {
     #[test]
     fn compute_insufficient_data_arc() {
         let ema = ExponentialMovingAverage::new(10);
-        let data = Arc::new([1.0, 2.0]);
-        let result = ema.compute(data);
+        let data = vec![1.0, 2.0];
+        let result = ema.compute(&data);
         assert!(result.is_err(), "Should return an error due to insufficient data");
     }
 
     #[test]
     fn compute_with_invalid_data_arc() {
         let ema = ExponentialMovingAverage::new(3);
-        let data = Arc::new([1.0, f64::NAN, 3.0]);
-        let result = ema.compute(data);
+        let data = vec![1.0, f64::NAN, 3.0];
+        let result = ema.compute(&data);
         assert!(result.is_err(), "Should return an error due to invalid (NaN) data");
     }
 

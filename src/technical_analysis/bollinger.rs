@@ -6,8 +6,6 @@
 //! and a lower band at K times an N-period standard deviation below the middle band.
 //!
 //! Typically, the middle band is the 20-day SMA and the standard deviation is set to 2.
-
-use std::sync::Arc;
 use anyhow::{Result, anyhow};
 
 use crate::technical_analysis::{Indicator, PeriodIndicator};
@@ -28,8 +26,8 @@ use super::sma::SimpleMovingAverage;
 /// use qmachina::technical_analysis::Indicator;
 ///
 /// let bb = BollingerBands::new(5);
-/// let data = Arc::new([100.0, 101.0, 102.0, 103.0, 102.0, 101.0, 100.0, 99.0, 98.0, 97.0]); // Sample data
-/// let (upper_band, lower_band) = bb.compute(data).unwrap();
+/// let data = vec![100.0, 101.0, 102.0, 103.0, 102.0, 101.0, 100.0, 99.0, 98.0, 97.0]; // Sample data
+/// let (upper_band, lower_band) = bb.compute(&data).unwrap();
 /// ```
 pub struct BollingerBands {
     period: usize,
@@ -58,7 +56,7 @@ impl Indicator<f64, (f64, f64)> for BollingerBands {
     ///
     /// # Parameters
     ///
-    /// * `data` - An `Arc<[f64]>` containing the closing prices for the calculation.
+    /// * `data` - An `Vec<f64>` containing the closing prices for the calculation.
     ///
     /// # Returns
     ///
@@ -67,12 +65,12 @@ impl Indicator<f64, (f64, f64)> for BollingerBands {
     /// # Errors
     ///
     /// Returns an error if the length of the data is less than the specified period.
-    fn compute(&self, data: Arc<[f64]>) -> Result<(f64, f64)> {
+    fn compute(&self, data: &Vec<f64>) -> Result<(f64, f64)> {
         if data.len() < self.period {
             return Err(anyhow!("Data length is less than the period."));
         }
 
-        let sma_value = self.sma.compute(data.clone())?;
+        let sma_value = self.sma.compute(data.as_ref())?;
 
         let data = &data[data.len() - self.period..];
 
@@ -116,7 +114,6 @@ impl PeriodIndicator for BollingerBands {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::Arc;
 
     #[test]
     fn bollinger_bands_creation_with_valid_period() {
@@ -127,9 +124,9 @@ mod tests {
     #[test]
     fn compute_sufficient_data_arc() {
         let bb = BollingerBands::new(5);
-        let data = Arc::new([100.0, 101.0, 102.0, 103.0, 102.0, 101.0, 100.0, 99.0, 98.0, 97.0]);
+        let data = vec![100.0, 101.0, 102.0, 103.0, 102.0, 101.0, 100.0, 99.0, 98.0, 97.0];
 
-        let (upper_band, lower_band) = bb.compute(data).unwrap();
+        let (upper_band, lower_band) = bb.compute(&data).unwrap();
 
         // Validate the upper and lower band values
         // These values should be calculated based on the expected Bollinger Bands calculation
@@ -145,16 +142,16 @@ mod tests {
     #[test]
     fn compute_insufficient_data_arc() {
         let bb = BollingerBands::new(20);
-        let data = Arc::new([100.0, 101.0, 102.0]);
-        let result = bb.compute(data);
+        let data = vec![100.0, 101.0, 102.0];
+        let result = bb.compute(&data);
         assert!(result.is_err(), "Should return an error due to insufficient data");
     }
 
     #[test]
     fn compute_with_invalid_data_arc() {
         let bb = BollingerBands::new(5);
-        let data = Arc::new([100.0, f64::NAN, 102.0, 103.0, 104.0]);
-        let result = bb.compute(data);
+        let data = vec![100.0, f64::NAN, 102.0, 103.0, 104.0];
+        let result = bb.compute(&data);
         assert!(result.is_err(), "Should return an error due to invalid (NaN) data");
     }
 }

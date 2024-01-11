@@ -1,5 +1,4 @@
 //! This module contains various technical analysis indicators.
-use std::sync::Arc;
 use anyhow::Result;
 
 pub mod sma;
@@ -38,7 +37,7 @@ pub mod macd;
 /// };
 ///
 /// impl Indicator<f64, f64> for SimpleMovingAverage {
-///     fn compute(&self, data: Arc<[f64]>) -> Result<f64> {
+///     fn compute(&self, data: &Vec<f64>) -> Result<f64> {
 ///         if data.len() < self.period {
 ///             return Err(anyhow::anyhow!("Data length is less than the period."));
 ///         }
@@ -70,7 +69,7 @@ pub trait Indicator<T, V> {
     /// # Returns
     /// A `Result` wrapping the computed value (`V`) of the indicator, or an error if the 
     /// computation cannot be performed.
-    fn compute(&self, data: Arc<[T]>) -> Result<V>;
+    fn compute(&self, data: &Vec<T>) -> Result<V>;
 }
 
 /// The `PeriodIndicator` trait extends the functionality of indicators that

@@ -2,7 +2,7 @@
 //!
 //! The SMA is a commonly used indicator in technical analysis that averages a certain number
 //! of past data points to smooth out price data.
-use std::{sync::Arc, ops::Div};
+use std::ops::Div;
 use anyhow::{Result, anyhow};
 
 use super::{Indicator, PeriodIndicator};
@@ -67,7 +67,7 @@ impl Indicator<f64, f64> for SimpleMovingAverage {
     ///
     /// # Parameters
     ///
-    /// * `data` - An `Arc<[f64]>` containing the data points for which the SMA is calculated.
+    /// * `data` - An `Vec<f64>` containing the data points for which the SMA is calculated.
     ///
     /// # Returns
     ///
@@ -77,7 +77,7 @@ impl Indicator<f64, f64> for SimpleMovingAverage {
     ///
     /// Returns an error if the length of the data is less than the SMA period or if the data contains
     /// invalid values (NaN or infinite).
-    fn compute(&self, data: Arc<[f64]>) -> Result<f64> {
+    fn compute(&self, data: &Vec<f64>) -> Result<f64> {
         if data.len() < self.period {
             return Err(anyhow!("Period is larger than the sampled data."));
         }
@@ -94,7 +94,6 @@ impl Indicator<f64, f64> for SimpleMovingAverage {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::Arc;
 
     #[test]
     fn sma_creation_with_valid_period() {
@@ -112,25 +111,25 @@ mod tests {
     fn compute_sufficient_data_arc() {
         let sma = SimpleMovingAverage::new(3);
 
-        let data = Arc::new([1.0, 2.0, 3.0, 4.0, 5.0]);
+        let data = vec![1.0, 2.0, 3.0, 4.0, 5.0];
 
-        let result = sma.compute(data).unwrap();
+        let result = sma.compute(&data).unwrap();
         assert_eq!(result, 4.0, "SMA of last 3 values (3, 4, 5) should be 4.0");
     }
 
     #[test]
     fn compute_insufficient_data_arc() {
         let sma = SimpleMovingAverage::new(5);
-        let data = Arc::new([1.0, 2.0]);
-        let result = sma.compute(data);
+        let data = vec![1.0, 2.0];
+        let result = sma.compute(&data);
         assert!(result.is_err(), "Should return an error due to insufficient data");
     }
 
     #[test]
     fn compute_with_invalid_data_arc() {
         let sma = SimpleMovingAverage::new(3);
-        let data = Arc::new([1.0, f64::NAN, 3.0]);
-        let result = sma.compute(data);
+        let data = vec![1.0, f64::NAN, 3.0];
+        let result = sma.compute(&data);
         assert!(result.is_err(), "Should return an error due to invalid (NaN) data");
     }
 
