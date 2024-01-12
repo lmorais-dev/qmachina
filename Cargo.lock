@@ -877,7 +877,7 @@ dependencies = [
 
 [[package]]
 name = "qmachina"
-version = "0.3.0-dev.3"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "polars",
